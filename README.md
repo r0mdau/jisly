@@ -5,7 +5,7 @@ Jisly
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
 [![Dependency Status](https://dependencyci.com/github/r0mdau/jisly/badge)](https://dependencyci.com/github/r0mdau/jisly)
 
-Client pour travailler sur un modèle de données NoSQL codé en PHP, données stockées au format JSON.
+Modèle de données NoSQL écrit en PHP, données stockées au format JSON dans des fichiers.
 
 **Les accès concurrents sont gérés !**
 
