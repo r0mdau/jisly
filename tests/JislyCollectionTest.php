@@ -116,7 +116,8 @@ class JislyCollectionTest extends \PHPUnit_Framework_TestCase
     public function testInsertCreateRandom_rid()
     {
         $this->assertTrue($this->getCollection()->insert(["key" => 123]));
-        $object = reset($this->getDataFromFile());
+        $data = $this->getDataFromFile();
+        $object = reset($data);
 
         $this->assertObjectHasAttribute("_rid", $object);
     }
