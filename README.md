@@ -97,7 +97,7 @@ $result = $database->collection($file)->findOne(
 
 Pour la modification, les documents concernés sont entièrement remplacés par le second **array()** passé en paramètre.
 
-*Il faut au préalable rechercher tous les documents à effacer pour fournir l'attribut `_rid` à la méthode delete*
+*Il faut au préalable rechercher tous les documents à effacer pour fournir l'attribut `_rid` à la méthode update*
 
 Modifie le seul document de la collection qui a pour valeur $rid à l'attribut `_rid`
 
