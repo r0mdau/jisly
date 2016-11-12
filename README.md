@@ -3,7 +3,7 @@ Jisly
 
 [![Build Status](https://travis-ci.org/r0mdau/jisly.svg?branch=master)](https://travis-ci.org/r0mdau/jisly)
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
-[![Dependency Status](https://dependencyci.com/github/r0mdau/jisly/badge)](https://dependencyci.com/github/r0mdau/jisly)
+[![Dependency Status](https://www.versioneye.com/user/projects/582794b64d093e0048e497aa/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/582794b64d093e0048e497aa)
 
 Modèle de données NoSQL écrit en PHP, données stockées au format JSON dans des fichiers.
 
