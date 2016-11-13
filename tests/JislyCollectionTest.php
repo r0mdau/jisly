@@ -7,7 +7,6 @@ class JislyCollectionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->db = new Jisly("data");
-        $this->collection = $this->db->collection("test.db");
         $this->file = "data/test.db";
     }
 
@@ -18,8 +17,10 @@ class JislyCollectionTest extends \PHPUnit_Framework_TestCase
         fclose($handle);
     }
 
-    public function testConstructCreateFile()
+    public function testConstructCollectionCreateFile()
     {
+        $this->db->collection("test.db");
+
         $this->assertTrue(file_exists($this->file));
     }
 
@@ -182,7 +183,6 @@ class JislyCollectionTest extends \PHPUnit_Framework_TestCase
         fclose($handle);
     }
 
-    private $collection;
     private $db;
     private $file;
 }
