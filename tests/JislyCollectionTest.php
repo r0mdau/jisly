@@ -2,7 +2,7 @@
 
 namespace Jisly;
 
-class JislyCollectionTest extends \PHPUnit_Framework_TestCase
+class JislyCollectionTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {
