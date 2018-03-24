@@ -1,9 +1,27 @@
+sudo: false
+
 language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    - COMPOSER_ARGS="--no-interaction"
+    - COVERAGE_DEPS="php-coveralls/php-coveralls"
+
 php:
   - '7.2'
-before_script:
-  - composer install
+install:
+  - travis_retry composer install $COMPOSER_ARGS
+  - travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS
+  - composer show
+  - cat phpunit.xml
 script:
   - composer test-coverage
-after_success:
-  - travis_retry php vendor/bin/coveralls
+  - composer cs-check
+  - composer license-check
+  - composer phpstan
+after_script:
+  - vendor/bin/php-coveralls -v
