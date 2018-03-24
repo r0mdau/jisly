@@ -5,6 +5,8 @@
  * @license   https://github.com/r0mdau/jisly/blob/master/LICENSE.md Apache License 2.0
  */
 
+declare(strict_types=1);
+
 namespace Jisly;
 
 class JislyTest extends \PHPUnit\Framework\TestCase

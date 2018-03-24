@@ -5,6 +5,8 @@
  * @license   https://github.com/r0mdau/jisly/blob/master/LICENSE.md Apache License 2.0
  */
 
+declare(strict_types=1);
+
 namespace Jisly;
 
 class JislyCollection
@@ -21,9 +23,7 @@ class JislyCollection
         $this->data = [];
 
         if (!file_exists($this->file)) {
-            if (touch($this->file) === false) {
-                throw new \Exception("Impossible de créer le fichier {$this->file}");
-            }
+            touch($this->file);
         } else {
             $handle = $this->openFile('r', LOCK_SH);
             $this->hydrateData($handle);
@@ -31,7 +31,7 @@ class JislyCollection
         }
     }
 
-    public function delete($_rid)
+    public function delete($_rid): bool
     {
         $success = false;
         $handle = $this->openFile("r+", LOCK_EX);
@@ -45,21 +45,21 @@ class JislyCollection
         return $success;
     }
 
-    public function find($document = null, $logical = "OR")
+    public function find($document = null, $logical = "OR"): array
     {
         return $this->search($document, $logical);
     }
 
-    public function findOne($document = null, $logical = "OR")
+    public function findOne($document = null, $logical = "OR"): object
     {
         $result = $this->search($document, $logical);
         return reset($result);
     }
 
-    public function insert($document)
+    public function insert($document): bool
     {
         if (!isset($document["_rid"])) {
-            $document["_rid"] = md5(uniqid(rand(1, 100), true));
+            $document["_rid"] = md5(uniqid((string)rand(1, 100), true));
         }
 
         $handle = $this->openFile('a', LOCK_EX);
@@ -69,14 +69,14 @@ class JislyCollection
         return $success;
     }
 
-    public function truncate()
+    public function truncate(): bool
     {
         $handle = $this->openFile('w', LOCK_EX);
         flock($handle, LOCK_UN);
         return true;
     }
 
-    public function update($_rid, $values)
+    public function update($_rid, $values): bool
     {
         $success = false;
         $handle = $this->openFile("r+", LOCK_EX);
@@ -90,13 +90,16 @@ class JislyCollection
         return $success;
     }
 
-    private function hydrateData($handle)
+    private function hydrateData($handle): void
     {
         $this->data = [];
         while (!feof($handle)) {
-            $data = json_decode(fgets($handle));
-            if (isset($data->_rid)) {
-                $this->data[$data->_rid] = $data;
+            $data = fgets($handle);
+            if ($data !== false) {
+                $data = json_decode($data);
+                if (isset($data->_rid)) {
+                    $this->data[$data->_rid] = $data;
+                }
             }
         }
     }
@@ -104,14 +107,11 @@ class JislyCollection
     private function openFile($mode, $lock)
     {
         $handle = fopen($this->file, $mode);
-        if ($handle === false) {
-            throw new \Exception("Impossible d'ouvrir le fichier {$this->file}");
-        }
         flock($handle, $lock);
         return $handle;
     }
 
-    private function rewriteFile($handle)
+    private function rewriteFile($handle): bool
     {
         $success = false;
         if (ftruncate($handle, 0) === true && rewind($handle) === true) {
@@ -122,7 +122,7 @@ class JislyCollection
         return empty($this->data) ?: $success;
     }
 
-    private function search($document = null, $logical = "OR")
+    private function search($document = null, $logical = "OR"): array
     {
         if (is_null($document)) {
             return $this->data;

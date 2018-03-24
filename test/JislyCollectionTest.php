@@ -5,6 +5,8 @@
  * @license   https://github.com/r0mdau/jisly/blob/master/LICENSE.md Apache License 2.0
  */
 
+declare(strict_types=1);
+
 namespace Jisly;
 
 class JislyCollectionTest extends \PHPUnit\Framework\TestCase
@@ -24,9 +26,10 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
 
     public function testConstructCollectionCreateFile()
     {
-        $this->db->collection("test.db");
+        $this->db->collection("yo.db");
 
-        $this->assertTrue(file_exists($this->file));
+        $this->assertTrue(file_exists("data/yo.db"));
+        unlink("data/yo.db");
     }
 
     public function testDelete()
@@ -51,6 +54,11 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
     public function testDeleteReturnFalseIfFail()
     {
         $this->assertFalse($this->getCollection()->delete("key"));
+    }
+
+    public function testFindWithNullDocument()
+    {
+        $this->assertThat($this->getCollection()->find(), $this->isEmpty());
     }
 
     public function testFindLogicalOR()
@@ -171,9 +179,12 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         $handle = fopen($this->file, 'r');
         $data = [];
         while (!feof($handle)) {
-            $line = json_decode(fgets($handle));
-            if (isset($line->_rid)) {
-                $data[$line->_rid] = $line;
+            $line = fgets($handle);
+            if ($line !== false) {
+                $line = json_decode($line);
+                if (isset($line->_rid)) {
+                    $data[$line->_rid] = $line;
+                }
             }
         }
         return $data;

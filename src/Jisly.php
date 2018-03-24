@@ -5,6 +5,8 @@
  * @license   https://github.com/r0mdau/jisly/blob/master/LICENSE.md Apache License 2.0
  */
 
+declare(strict_types=1);
+
 namespace Jisly;
 
 class Jisly
@@ -16,7 +18,7 @@ class Jisly
         $this->directory = $directory;
     }
 
-    public function collection($name)
+    public function collection($name): JislyCollection
     {
         return new JislyCollection($this->directory, $name);
     }

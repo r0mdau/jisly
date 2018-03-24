@@ -3,3 +3,5 @@
  * @copyright Copyright (c) %regexp:20\d{2}% r0mdau (https://github.com/r0mdau)
  * @license   https://github.com/r0mdau/jisly/blob/master/LICENSE.md Apache License 2.0
  */
+
+declare(strict_types=1);
