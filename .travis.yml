@@ -2,9 +2,8 @@ language: php
 php:
   - '7.0'
 before_script:
-  - mkdir -p build/logs
   - composer install
 script:
-  - vendor/bin/phpunit
+  - composer test-coverage
 after_success:
   - travis_retry php vendor/bin/coveralls

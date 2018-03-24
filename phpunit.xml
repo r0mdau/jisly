@@ -3,15 +3,12 @@
 <phpunit colors="true">
     <testsuites>
         <testsuite name="Jisly">
-            <directory>./tests/</directory>
+            <directory>./test/</directory>
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
-    <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-    </logging>
 </phpunit>

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @see       https://github.com/r0mdau/jisly for the source repository
+ * @copyright Copyright (c) 2018 r0mdau (https://github.com/r0mdau)
+ * @license   https://github.com/r0mdau/jisly/blob/master/LICENSE.md Apache License 2.0
+ */
 
 namespace Jisly;
 
@@ -117,9 +122,11 @@ class JislyCollection
         return empty($this->data) ?: $success;
     }
 
-    private function search($document = null, $logical)
+    private function search($document = null, $logical = "OR")
     {
-        if (is_null($document)) return $this->data;
+        if (is_null($document)) {
+            return $this->data;
+        }
 
         $results = [];
         foreach ($this->data as $object) {
@@ -127,9 +134,8 @@ class JislyCollection
             foreach (array_keys($document) as $documentKey) {
                 if (isset($object->{$documentKey}) && $object->{$documentKey} == $document[$documentKey]) {
                     $find++;
-                    if (
-                        ($logical == static::LOGICAL_AND && $find == count($document)) ||
-                        $logical == static::LOGICAL_OR
+                    if ($logical == static::LOGICAL_OR
+                        || ($logical == static::LOGICAL_AND && $find == count($document))
                     ) {
                         $results[$object->_rid] = $object;
                     }
