@@ -107,9 +107,12 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         $this->getCollection()->insert(["_rid" => "cool", "key" => 123]);
         $this->getCollection()->insert(["_rid" => "cooly", "key" => 456]);
 
+
         $this->assertEquals(
-            ["cooly" => (object)["_rid" => "cooly", "key" => 456]],
-            ["cooly" => (object)["_rid" => "cooly", "key" => 456]],
+            [
+                "cool" => (object)["_rid" => "cool", "key" => 123],
+                "cooly" => (object)["_rid" => "cooly", "key" => 456]
+            ],
             $this->getDataFromFile()
         );
     }
