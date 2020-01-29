@@ -3,110 +3,103 @@ Jisly
 
 [![Build Status](https://travis-ci.org/r0mdau/jisly.svg?branch=master)](https://travis-ci.org/r0mdau/jisly)
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/582794b64d093e0048e497aa/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/582794b64d093e0048e497aa)
+[![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg?targetFile=composer.lock)](https://snyk.io/test/github/r0mdau/jisly?targetFile=composer.lock)
 
-Modèle de données NoSQL écrit en PHP, données stockées au format JSON dans des fichiers.
+Light NoSQL database written in PHP, datas are stored in JSON in files.
 
-**Les accès concurrents sont gérés !**
+**Concurrent access is managed !**
 
-#Définitions
+# Definitions
 
-1. Chaque document possède un identifiant unique dénommé `_rid`.
-2. Chaque collection est représentée physiquement par un fichier.
-3. Les fichiers sont stockés dans un seul répertoire de travail. La classs Jisly est instanciée avec le chemin vers ce répertoire en paramètre.
+1. Each document has a unique identifier called `_rid`.
+2. Each collection is physically represented by a file.
+3. The files are stored in a single working directory. The Jisly class is instantiated with the path to this directory 
+as a parameter.
 
-# Exemples d'utilisation
+# Examples of use
 
-## Initialisation de la classe :
+## Initialization of the class
 
-`$directory` contient le chemin vers le répertoire où seront stockés les fichiers (=collections) du modèle de données.
+`$directory` contains the path to the directory where the files (=collections) of the data model will be stored.
 
 ```php
 $database = new Jisly($directory);
 ```
 
-## Pour accéder à une collection :
+## To access a collection
 
-`$nom` contient le nom de la collection que l'on souhaite requêter. Exemple : `user`
+`$name` contains the name of the collection we want to request. Example : `user`.
 
-Retourne un objet **JislyCollection**
-
+Returns an object **JislyCollection** :
 ```php
-$database->collection($nom);
+$database->collection($name);
 ```
 
-## Pour requêter une collection :
+## To call a collection
 
-**PREAMBULE :**
-Les méthodes Insert, Update, Delete retournent un booleen, `true` si l'action s'est bien passée, `false` dans le cas contraire
+**PREAMBLE :**
+The Insert, Update, Delete methods return a boolean, `true` if the action went well, `false` otherwise.
 
-### Méthode d'insertion :
+### Insert method
 
-Insère le tableau dans la collection spécifiée au format json et attribue un identifiant `_rid` unique au document 
-si celui-ci n'a pas été spécifié.
-
+Insert the array into the specified collection in JSON format and assigns a unique `_rid` identifier to the document if 
+it has not been specified :
 ```php
 $successBool = $database->collection($file)->insert(
   [
-    "nom" => "dauby", 
-    "prenom" => "romain"
+    "name" => "Lucas", 
+    "firstname" => "Georges"
   ]
 );
 ```
 
-### Méthode de suppression :
+### Delete method
 
-*Il faut au préalable rechercher tous les documents à effacer pour fournir l'attribut `_rid` à la méthode delete*
+*You must first find all documents to delete to provide the `_rid` attribute to the delete method.*
 
-Supprime le seul document de la collection qui a pour valeur `$rid` à l'attribut `_rid`
-
+Remove the only document in the collection which has the value `$rid` to the attribute `_rid` :
 ```php
 $successBool = $database->collection($file)->delete($rid);
 ```
 
-### Méthode de sélection :
+### Select method
 
-Retourne tous les documents de la collection dans un **array()** d'objets
-
-
+Returns all documents in the collection in an **array()** of objects :
 ```php
 $results = $database->collection($file)->find();
 ```
 
-Retourne tous les documents de la collection qui ont un attribut `nom` avec `dauby` comme valeur dans un **array()** d'objets
-
+Return all documents in the collection that have a `name` attribute with `Lucas` as value in an **array()** of objects :
 ```php
 $results = $database->collection($file)->find(
   [
-    "nom" => "dauby"
+    "name" => "Lucas"
   ]
 );
 ```
 
-Retourne le premier document qui a un attribut `nom` avec `19` comme valeur sous forme d'objet
-
+Return the first document that as a `name` attribute with `19` as an object value :
 ```php
 $result = $database->collection($file)->findOne(
   [
-    "nom" => 19
+    "name" => 19
   ]
 );
 ```
 
-### Méthode de modification :
+### Update method
 
-Pour la modification, les documents concernés sont entièrement remplacés par le second **array()** passé en paramètre.
+For the modification, the documents concerned are entirely replaced by the second **array()** given in parameter.
 
-*Il faut au préalable rechercher tous les documents à effacer pour fournir l'attribut `_rid` à la méthode update*
+*You must first find all the documents to replace to provide the `_rid` attribute to the update method.*
 
-Modifie le seul document de la collection qui a pour valeur $rid à l'attribut `_rid`
-
+Modify the only document in the collection whose value $rid to the `_rid` attribute :
 ```php
 $successBool = $database->collection($file)->update(
   $rid,
   [
-    "prenom" => "georges", 
-    "nom" => "lucas"
+    "firstname" => "Georges", 
+    "name" => "lucas"
   ]
 );
 ```
