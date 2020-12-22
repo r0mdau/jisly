@@ -1,6 +1,6 @@
 includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
-	fileExtensions:
-		- php
+	level: 6
 	reportUnmatchedIgnoredErrors: true
+	checkMissingIterableValueType: false

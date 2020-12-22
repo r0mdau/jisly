@@ -9,16 +9,31 @@ declare(strict_types=1);
 
 namespace Jisly;
 
+/**
+ * Class Jisly
+ * @package Jisly
+ */
 class Jisly
 {
+    /**
+     * @var string
+     */
     private $directory;
 
-    public function __construct($directory)
+    /**
+     * Jisly constructor.
+     * @param string $directory
+     */
+    public function __construct(string $directory)
     {
         $this->directory = $directory;
     }
 
-    public function collection($name): JislyCollection
+    /**
+     * @param string $name
+     * @return JislyCollection
+     */
+    public function collection(string $name): JislyCollection
     {
         return new JislyCollection($this->directory, $name);
     }
