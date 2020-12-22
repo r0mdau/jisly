@@ -5,7 +5,10 @@ Jisly
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg?targetFile=composer.lock)](https://snyk.io/test/github/r0mdau/jisly?targetFile=composer.lock)
 
-Light NoSQL database written in PHP, datas are stored in JSON in files.
+Simple NoSQL database written in PHP, data stored in JSON on filesystem.
+
+The main goal of Jisly is to allow you to quickly start your project with the possibility of file system storage and 
+NoSQL query syntax.
 
 **Concurrent access is managed !**
 

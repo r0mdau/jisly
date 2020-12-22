@@ -5,7 +5,9 @@ Jisly
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg?targetFile=composer.lock)](https://snyk.io/test/github/r0mdau/jisly?targetFile=composer.lock)
 
-Modèle de données NoSQL écrit en PHP, données stockées au format JSON dans des fichiers.
+Modèle de données NoSQL simple écrit en PHP, données stockées au format JSON sur le système de fichiers.
+
+Le principal but de Jisly est de vous permettre de démarrer rapidement votre projet avec une possibilité de stockage sur système de fichier et une syntaxe de requêtage NoSQL.
 
 **Les accès concurrents sont gérés !**
 
