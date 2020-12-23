@@ -11,13 +11,13 @@ namespace Jisly;
 
 class JislyCollectionTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         $this->db = new Jisly("data");
         $this->file = "data/test.db";
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $handle = fopen($this->file, 'w');

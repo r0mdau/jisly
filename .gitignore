@@ -1,2 +1,9 @@
+# PhpStorm
+/.idea
+
+# Composer
 vendor/
-.idea/
+
+# PHPUnit
+/.phpunit.cache
+.phpunit.result.cache

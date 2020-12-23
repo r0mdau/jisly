@@ -11,7 +11,7 @@ namespace Jisly;
 
 class JislyTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         $this->db = new Jisly('data');
     }
