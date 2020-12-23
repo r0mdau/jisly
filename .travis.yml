@@ -12,7 +12,7 @@ env:
     - COVERAGE_DEPS="php-coveralls/php-coveralls"
 
 php:
-  - '7.2'
+  - '7.3'
 install:
   - travis_retry composer install $COMPOSER_ARGS
   - travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS
