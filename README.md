@@ -5,10 +5,10 @@ Jisly
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg?targetFile=composer.lock)](https://snyk.io/test/github/r0mdau/jisly?targetFile=composer.lock)
 
-Simple NoSQL database written in PHP, data stored in JSON on filesystem.
+PHP lightweight NoSQL database library, flat file JSON.
 
-The main goal of Jisly is to allow you to quickly start your project with the possibility of file system storage and 
-NoSQL query syntax.
+The main goal of Jisly is to allow you to quickly start your project with the possibility of memory and flat file  
+storage using a NoSQL (document oriented) query syntax.
 
 **Concurrent access is managed !**
 
@@ -18,6 +18,8 @@ NoSQL query syntax.
 2. Each collection is physically represented by a file.
 3. The files are stored in a single working directory. The Jisly class is instantiated with the path to this directory 
 as a parameter.
+4. Each time you CRUD something, all datas are stored in memory.
+5. And datas are saved on filesystem.
 
 # Examples of use
 
@@ -37,6 +39,8 @@ Returns an object **JislyCollection** :
 ```php
 $database->collection($name);
 ```
+
+Warning : each first time you access a collection, all datas are stored in memory.
 
 ## To call a collection
 

@@ -1,6 +1,6 @@
 {
   "name": "r0mdau/jisly",
-  "description": "Simple NoSQL database, data stored in JSON on filesystem",
+  "description": "Lightweight NoSQL database library, flat file JSON.",
   "type": "library",
   "license": "Apache-2.0",
   "homepage": "https://github.com/r0mdau/jisly",

@@ -5,9 +5,10 @@ Jisly
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=master)](https://coveralls.io/github/r0mdau/jisly?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg?targetFile=composer.lock)](https://snyk.io/test/github/r0mdau/jisly?targetFile=composer.lock)
 
-Modèle de données NoSQL simple écrit en PHP, données stockées au format JSON sur le système de fichiers.
+Bibliothèque de base de données PHP légère NoSQL, fichier plat JSON.
 
-Le principal but de Jisly est de vous permettre de démarrer rapidement votre projet avec une possibilité de stockage sur système de fichier et une syntaxe de requêtage NoSQL.
+L'objectif principal de Jisly est de vous permettre de démarrer rapidement votre projet avec la possibilité de stockage
+ en mémoire et fichier plat à l'aide d'une syntaxe de requête NoSQL (orientée document).
 
 **Les accès concurrents sont gérés !**
 
@@ -15,7 +16,10 @@ Le principal but de Jisly est de vous permettre de démarrer rapidement votre pr
 
 1. Chaque document possède un identifiant unique dénommé `_rid`.
 2. Chaque collection est représentée physiquement par un fichier.
-3. Les fichiers sont stockés dans un seul répertoire de travail. La classs Jisly est instanciée avec le chemin vers ce répertoire en paramètre.
+3. Les fichiers sont stockés dans un seul répertoire de travail. La classs Jisly est instanciée avec le chemin vers ce 
+répertoire en paramètre.
+4. Chaque fois que vous faites un CRUD, toutes les données sont stockées en mémoire.
+5. Et les données sont sauvegardées sur le système de fichiers.
 
 # Exemples d'utilisation
 
@@ -35,6 +39,8 @@ Retourne un objet **JislyCollection** :
 ```php
 $database->collection($nom);
 ```
+
+Attention : chaque premier accès à une collection lance le stockage des données en mémoire.
 
 ## Pour requêter une collection :
 
