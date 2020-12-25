@@ -95,6 +95,34 @@ $result = $database->collection($file)->findOne(
 );
 ```
 
+#### Opérateurs logiques OR et AND
+
+Ces deux opérateurs logiques peuvent être utilisés avec les méthodes `find` et `findOne`.
+
+Si vous ne spécifiez pas d'opérateur logique, le **OR** sera utilisé.
+
+Retourne tous les documents de la collection qui on un attribut `nom` avec `Lucas` **OU** un attribut `prenom` 
+avec `Georges` dans un **array()** d'objets :
+```php
+$result = $database->collection($file)->find(
+  [
+    "prenom" => "Georges", 
+    "nom" => "Lucas"
+  ], JislyCollection::LOGICAL_OR
+);
+```
+
+Retourne le premier document qui a un attribut `nom` avec `Lucas` **ET** un attribut `prenom`
+avec `Georges` sous forme d'objet :
+```php
+$result = $database->collection($file)->findOne(
+  [
+    "prenom" => "Georges", 
+    "nom" => "Lucas"
+  ], JislyCollection::LOGICAL_AND
+);
+```
+
 ### Méthode de modification :
 
 Pour la modification, les documents concernés sont entièrement remplacés par le second **array()** passé en paramètre.

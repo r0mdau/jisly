@@ -94,6 +94,34 @@ $result = $database->collection($file)->findOne(
 );
 ```
 
+#### Logical operators OR and AND
+
+These two logical operators can be used on `find` and `findOne` methods.
+
+If no logical operator is provided, **OR** is used.
+
+Return all documents in the collection that have a `name` attribute with `Lucas` **OR** a `firstname` attribute with
+`Georges` as values in an **array()** of objects :
+```php
+$result = $database->collection($file)->find(
+  [
+    "firstname" => "Georges", 
+    "name" => "Lucas"
+  ], JislyCollection::LOGICAL_OR
+);
+```
+
+Return the first document in the collection that have a `name` attribute with `Lucas` **AND** a `firstname` attribute with
+`Georges` as an object value :
+```php
+$result = $database->collection($file)->findOne(
+  [
+    "firstname" => "Georges", 
+    "name" => "Lucas"
+  ], JislyCollection::LOGICAL_AND
+);
+```
+
 ### Update method
 
 For the modification, the documents concerned are entirely replaced by the second **array()** given in parameter.
@@ -106,7 +134,7 @@ $successBool = $database->collection($file)->update(
   $rid,
   [
     "firstname" => "Georges", 
-    "name" => "lucas"
+    "name" => "Lucas"
   ]
 );
 ```
