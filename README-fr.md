@@ -12,6 +12,27 @@ L'objectif principal de Jisly est de vous permettre de démarrer rapidement votr
 
 **Les accès concurrents sont gérés !**
 
+# Comment installer et charger
+
+Cette librairie est disponible sur [Packagist](https://packagist.org/packages/r0mdau/jisly)
+
+```
+composer require r0mdau/jisly:^2.0
+```
+
+## Charger la librairie
+
+Jisly repose sur la [spécification PSR-4](https://www.php-fig.org/psr/psr-4/) de chargement automatique des classes.
+
+```
+use Jisly\JislyCollection;
+
+public function saveCart(): void {
+    $jisly = new JislyCollection("/tmp/data", "cart");
+    ...
+}
+```
+
 # Définitions
 
 1. Chaque document possède un identifiant unique dénommé `_rid`.

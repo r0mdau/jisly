@@ -12,6 +12,27 @@ storage using a NoSQL (document oriented) query syntax.
 
 **Concurrent access is managed !**
 
+# How to install and load
+
+This lib can be found on [Packagist](https://packagist.org/packages/r0mdau/jisly)
+
+```
+composer require r0mdau/jisly:^2.0
+```
+
+## Loading the library
+
+Jisly relies on the [PSR-4 specification](https://www.php-fig.org/psr/psr-4/) for autoloading classes from file paths.
+
+```
+use Jisly\JislyCollection;
+
+public function saveCart(): void {
+    $jisly = new JislyCollection("/tmp/data", "cart");
+    ...
+}
+```
+
 # Definitions
 
 1. Each document has a unique identifier called `_rid`.
