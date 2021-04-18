@@ -3,6 +3,7 @@
 
 # Composer
 vendor/
+composer.phar
 
 # PHPUnit
 /.phpunit.cache
