@@ -19,13 +19,13 @@ jobs:
       fail-fast: false
 
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -33,7 +33,7 @@ jobs:
           extensions: mbstring, xml, json
           tools: php-cs-fixer, phpunit
           coverage: xdebug
-      
+
       - name: Install dependencies
         run: |
           composer install $COMPOSER_ARGS
@@ -45,3 +45,8 @@ jobs:
           composer cs-check
           composer license-check
           composer phpstan
+
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: vendor/bin/php-coveralls -v
