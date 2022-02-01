@@ -1,8 +1,10 @@
 name: PHPUnit
 
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - main
 
 env:
   COMPOSER_ARGS: --no-interaction
