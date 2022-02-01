@@ -1,7 +1,7 @@
 Jisly
 ========
 
-[![Build Status](https://travis-ci.org/r0mdau/jisly.svg?branch=main)](https://travis-ci.org/r0mdau/jisly)
+![PHPUnit](https://github.com/r0mdau/jisly/actions/workflows/unit-tests.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=main)](https://coveralls.io/github/r0mdau/jisly?branch=main)
 [![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg)](https://snyk.io/test/github/r0mdau/jisly)
 

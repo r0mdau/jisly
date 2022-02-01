@@ -1,0 +1,54 @@
+name: PHPUnit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  COMPOSER_ARGS: --no-interaction
+  COVERAGE_DEPS: php-coveralls/php-coveralls
+
+jobs:
+
+  tests:
+    name: Tests
+
+    strategy:
+      matrix:
+        php: ['8.1', '7.4']
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php }}"
+          extensions: mbstring, xml, json
+          tools: php-cs-fixer, phpunit
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: |
+          composer install $COMPOSER_ARGS
+          composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS
+
+      - name: Test
+        run: |
+          composer test-coverage
+          composer cs-check
+          composer license-check
+          composer phpstan
+
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: vendor/bin/php-coveralls -v
