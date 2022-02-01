@@ -8,3 +8,4 @@ composer.phar
 # PHPUnit
 /.phpunit.cache
 .phpunit.result.cache
+clover.xml

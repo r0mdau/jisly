@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+env:
+  COMPOSER_ARGS: --no-interaction
+  COVERAGE_DEPS: php-coveralls/php-coveralls
+
 jobs:
 
   tests:
@@ -11,9 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        include:
-          - php: '8.1'
-          - php: '7.4'
+        php: ['8.1', '7.4']
       fail-fast: false
 
     runs-on: ubuntu-latest
@@ -27,13 +29,19 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: "${{ matrix.php }}"
           extensions: mbstring, xml, json
           tools: php-cs-fixer, phpunit
-          coverage: pcov
+          coverage: xdebug
       
       - name: Install dependencies
-        run: composer install
+        run: |
+          composer install $COMPOSER_ARGS
+          composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS
 
       - name: Test
-        run: composer check
+        run: |
+          composer test-coverage
+          composer cs-check
+          composer license-check
+          composer phpstan
