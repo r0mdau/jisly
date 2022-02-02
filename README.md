@@ -10,6 +10,8 @@ PHP lightweight NoSQL database library, flat file JSON.
 The main goal of Jisly is to allow you to quickly start your project with the possibility of memory and flat file  
 storage using a NoSQL (document oriented) query syntax.
 
+[Version française ici](https://github.com/r0mdau/jisly/blob/main/README.fr.md)
+
 **Concurrent access is managed !**
 
 # How to install and load
