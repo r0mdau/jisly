@@ -1,9 +1,9 @@
 Changelog
-========
+=========
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.0.2 - TBD
+## 2.0.3 - TBD
 
 ### Added
 
@@ -24,6 +24,26 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - Nothing.
+
+## 2.0.2 - 2022-02-01
+
+- [Release Code](https://github.com/r0mdau/jisly/tree/ba973a1aa4e6c762d4183bd76e58ced3a51d9e40)
+
+### Added
+
+- CODEOWNERS
+- Github Actions for tests
+
+### Changed
+
+- Default branch is now : main
+- PHP >= 7.4
+- Dev dependencies updates
+- 2022 Copyrights
+
+### Removed
+
+- Travis-ci
 
 ## 2.0.1 - 2020-12-22
 
