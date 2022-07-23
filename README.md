@@ -5,9 +5,9 @@ Jisly
 [![Coverage Status](https://coveralls.io/repos/github/r0mdau/jisly/badge.svg?branch=main)](https://coveralls.io/github/r0mdau/jisly?branch=main)
 [![Known Vulnerabilities](https://snyk.io/test/github/r0mdau/jisly/badge.svg)](https://snyk.io/test/github/r0mdau/jisly)
 
-PHP lightweight NoSQL database library, flat file JSON.
+The smallest PHP lightweight NoSQL database library, flat file JSON.
 
-The main goal of Jisly is to allow you to quickly start your project with the possibility of memory and flat file  
+The main goal of Jisly is to allow you to quickly start your project with the possibility of memory and flat-file
 storage using a NoSQL (document oriented) query syntax.
 
 [Version française ici](https://github.com/r0mdau/jisly/blob/main/README.fr.md)
@@ -39,7 +39,7 @@ public function saveCart(): void {
 
 1. Each document has a unique identifier called `_rid`.
 2. Each collection is physically represented by a file.
-3. The files are stored in a single working directory. The Jisly class is instantiated with the path to this directory 
+3. The files are stored in a single working directory. The Jisly class is instantiated with the path to this directory
 as a parameter.
 4. Each time you CRUD something, all datas are stored in memory.
 5. And datas are saved on filesystem.
@@ -72,12 +72,12 @@ The Insert, Update, Delete methods return a boolean, `true` if the action went w
 
 ### Insert method
 
-Insert the array into the specified collection in JSON format and assigns a unique `_rid` identifier to the document if 
+Insert the array into the specified collection in JSON format and assigns a unique `_rid` identifier to the document if
 it has not been specified :
 ```php
 $successBool = $database->collection($file)->insert(
   [
-    "name" => "Lucas", 
+    "name" => "Lucas",
     "firstname" => "Georges"
   ]
 );
@@ -128,7 +128,7 @@ Return all documents in the collection that have a `name` attribute with `Lucas`
 ```php
 $result = $database->collection($file)->find(
   [
-    "firstname" => "Georges", 
+    "firstname" => "Georges",
     "name" => "Lucas"
   ], JislyCollection::LOGICAL_OR
 );
@@ -139,7 +139,7 @@ Return the first document in the collection that have a `name` attribute with `L
 ```php
 $result = $database->collection($file)->findOne(
   [
-    "firstname" => "Georges", 
+    "firstname" => "Georges",
     "name" => "Lucas"
   ], JislyCollection::LOGICAL_AND
 );
@@ -156,7 +156,7 @@ Modify the only document in the collection whose value $rid to the `_rid` attrib
 $successBool = $database->collection($file)->update(
   $rid,
   [
-    "firstname" => "Georges", 
+    "firstname" => "Georges",
     "name" => "Lucas"
   ]
 );
