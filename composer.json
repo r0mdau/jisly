@@ -10,8 +10,8 @@
   "require-dev": {
     "malukenho/docheader": "^0.1.7",
     "php-coveralls/php-coveralls": "^2.5",
-    "phpstan/phpstan": "^0.12",
-    "phpstan/phpstan-strict-rules": "^0.12",
+    "phpstan/phpstan": "^1.8",
+    "phpstan/phpstan-strict-rules": "^1.4",
     "phpunit/phpunit": "^9.0",
     "squizlabs/php_codesniffer": "^3.5"
   },
@@ -37,7 +37,7 @@
     ],
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
-    "phpstan": "phpstan analyze ./src",
+    "phpstan": "phpstan analyze ./src --xdebug",
     "test": "phpunit --colors=always",
     "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-clover clover.xml",
     "license-check": "docheader check src/ test/"

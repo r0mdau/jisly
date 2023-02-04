@@ -173,7 +173,7 @@ class JislyCollection
                 $success = $this->write($handle, (array)$data);
             }
         }
-        return $this->data !== null && isset($this->data) ? true : $success;
+        return $this->data !== null ? true : $success;
     }
 
     /**
