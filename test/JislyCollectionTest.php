@@ -136,7 +136,7 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         $data = $this->getDataFromFile();
         $object = reset($data);
 
-        $this->assertObjectHasAttribute("_rid", $object);
+        $this->assertTrue(isset($object->_rid));
     }
 
     public function testTruncate()
