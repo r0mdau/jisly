@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.0.3 - TBD
+## 2.1.1 - TBD
 
 ### Added
 
@@ -24,6 +24,16 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - Nothing.
+
+## 2.1.0 - 2023-02-06
+
+- [Release Code](https://github.com/r0mdau/jisly/tree/ba973a1aa4e6c762d4183bd76e58ced3a51d9e40)
+
+### Changed
+
+- PHP >= 8.1
+- Dev dependencies updates
+- 2023 Copyrights
 
 ## 2.0.2 - 2022-02-01
 
