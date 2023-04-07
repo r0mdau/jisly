@@ -37,7 +37,7 @@
     ],
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
-    "phpstan": "phpstan analyze ./src --xdebug",
+    "phpstan": "phpstan analyze ./src",
     "test": "phpunit --colors=always",
     "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-clover clover.xml",
     "license-check": "docheader check src/ test/"
