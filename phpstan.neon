@@ -3,4 +3,5 @@ includes:
 parameters:
 	level: 6
 	reportUnmatchedIgnoredErrors: true
-	checkMissingIterableValueType: false
+	ignoreErrors:
+	- identifier: missingType.iterableValue
