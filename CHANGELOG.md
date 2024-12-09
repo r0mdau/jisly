@@ -1,29 +1,19 @@
 Changelog
 =========
 
-All notable changes to this project will be documented in this file, in reverse chronological order by release.
+Changelog moved in the [releases pages](https://github.com/r0mdau/jisly/releases).
 
-## 2.1.1 - TBD
+Previous notable changes to this project are documented in this file, in reverse chronological order by release.
 
-### Added
+## 2.2.0 - 2024-03-16
 
-- Nothing.
+- [Release Code](https://github.com/r0mdau/jisly/tree/ba973a1aa4e6c762d4183bd76e58ced3a51d9e40)
 
 ### Changed
 
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
+- PHP >= 8.2
+- Dev dependencies updates
+- 2024 Copyrights
 
 ## 2.1.0 - 2023-02-06
 
