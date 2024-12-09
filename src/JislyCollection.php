@@ -194,8 +194,8 @@ class JislyCollection
                 /** @phpstan-ignore-next-line */
                 if (property_exists($object, $documentKey) && $object->{$documentKey} == $document[$documentKey]) {
                     $find++;
-                    if ($logical == static::LOGICAL_OR
-                        || ($logical == static::LOGICAL_AND && $find == count($document))
+                    if ($logical === static::LOGICAL_OR
+                        || ($logical === static::LOGICAL_AND && $find === count($document))
                     ) {
                         $results[$object->_rid] = $object;
                     }
