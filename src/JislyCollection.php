@@ -70,7 +70,7 @@ class JislyCollection
      * @param string $logical
      * @return array
      */
-    public function find(array $document = null, string $logical = "OR"): array
+    public function find(?array $document = null, string $logical = "OR"): array
     {
         return $this->search($document, $logical);
     }
@@ -80,7 +80,7 @@ class JislyCollection
      * @param string $logical
      * @return object
      */
-    public function findOne(array $document = null, string $logical = "OR"): object
+    public function findOne(?array $document = null, string $logical = "OR"): object
     {
         $result = $this->search($document, $logical);
         return reset($result);
@@ -181,7 +181,7 @@ class JislyCollection
      * @param string $logical
      * @return array
      */
-    private function search(array $document = null, string $logical = "OR"): array
+    private function search(?array $document = null, string $logical = "OR"): array
     {
         if (is_null($document)) {
             return $this->data;
