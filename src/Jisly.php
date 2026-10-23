@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/r0mdau/jisly for the source repository
- * @copyright Copyright (c) 2023 r0mdau (https://github.com/r0mdau)
+ * @copyright Copyright (c) 2026 r0mdau (https://github.com/r0mdau)
  * @license   https://github.com/r0mdau/jisly/blob/main/LICENSE.md Apache License 2.0
  */
 
@@ -15,24 +15,10 @@ namespace Jisly;
  */
 class Jisly
 {
-    /**
-     * @var string
-     */
-    private $directory;
-
-    /**
-     * Jisly constructor.
-     * @param string $directory
-     */
-    public function __construct(string $directory)
+    public function __construct(private string $directory)
     {
-        $this->directory = $directory;
     }
 
-    /**
-     * @param string $name
-     * @return JislyCollection
-     */
     public function collection(string $name): JislyCollection
     {
         return new JislyCollection($this->directory, $name);
