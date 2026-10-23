@@ -1,7 +1,7 @@
 <?php
 /**
  * @see       https://github.com/r0mdau/jisly for the source repository
- * @copyright Copyright (c) 2023 r0mdau (https://github.com/r0mdau)
+ * @copyright Copyright (c) 2026 r0mdau (https://github.com/r0mdau)
  * @license   https://github.com/r0mdau/jisly/blob/main/LICENSE.md Apache License 2.0
  */
 
@@ -15,24 +15,13 @@ namespace Jisly;
  */
 class JislyCollection
 {
-    const LOGICAL_AND = "AND";
-    const LOGICAL_OR = "OR";
+    public const string LOGICAL_AND = "AND";
+    public const string LOGICAL_OR = "OR";
 
-    /**
-     * @var string
-     */
-    private $file;
+    private string $file;
 
-    /**
-     * @var array
-     */
-    private $data;
+    private array $data;
 
-    /**
-     * JislyCollection constructor.
-     * @param string $dir
-     * @param string $file
-     */
     public function __construct(string $dir, string $file)
     {
         $this->file = "{$dir}/{$file}";
@@ -47,10 +36,6 @@ class JislyCollection
         }
     }
 
-    /**
-     * @param string $_rid
-     * @return bool
-     */
     public function delete(string $_rid): bool
     {
         $success = false;
@@ -65,35 +50,21 @@ class JislyCollection
         return $success;
     }
 
-    /**
-     * @param array|null $document
-     * @param string $logical
-     * @return array
-     */
     public function find(?array $document = null, string $logical = "OR"): array
     {
         return $this->search($document, $logical);
     }
 
-    /**
-     * @param array|null $document
-     * @param string $logical
-     * @return object
-     */
     public function findOne(?array $document = null, string $logical = "OR"): object
     {
         $result = $this->search($document, $logical);
         return reset($result);
     }
 
-    /**
-     * @param array $document
-     * @return bool
-     */
     public function insert(array $document): bool
     {
         if (!isset($document["_rid"])) {
-            $document["_rid"] = md5(uniqid((string)rand(1, 100), true));
+            $document["_rid"] = bin2hex(random_bytes(16));
         }
 
         $handle = $this->openFile('a', LOCK_EX);
@@ -103,9 +74,6 @@ class JislyCollection
         return $success;
     }
 
-    /**
-     * @return bool
-     */
     public function truncate(): bool
     {
         $handle = $this->openFile('w', LOCK_EX);
@@ -113,11 +81,6 @@ class JislyCollection
         return true;
     }
 
-    /**
-     * @param string $_rid
-     * @param array $values
-     * @return bool
-     */
     public function update(string $_rid, array $values): bool
     {
         $success = false;
@@ -150,8 +113,6 @@ class JislyCollection
     }
 
     /**
-     * @param string $mode
-     * @param int $lock
      * @return resource
      */
     private function openFile(string $mode, int $lock)
@@ -167,20 +128,17 @@ class JislyCollection
      */
     private function rewriteFile($handle): bool
     {
-        $success = false;
-        if (ftruncate($handle, 0) === true && rewind($handle) === true) {
-            foreach ($this->data as $data) {
-                $success = $this->write($handle, (array)$data);
-            }
+        if (ftruncate($handle, 0) === false || rewind($handle) === false) {
+            return false;
         }
-        return $this->data !== null ? true : $success;
+
+        $success = true;
+        foreach ($this->data as $data) {
+            $success = $this->write($handle, (array)$data) && $success;
+        }
+        return $success;
     }
 
-    /**
-     * @param array|null $document
-     * @param string $logical
-     * @return array
-     */
     private function search(?array $document = null, string $logical = "OR"): array
     {
         if (is_null($document)) {
@@ -207,10 +165,8 @@ class JislyCollection
 
     /**
      * @param resource $handle
-     * @param array $document
-     * @return bool
      */
-    private function write($handle, array $document)
+    private function write($handle, array $document): bool
     {
         return fwrite($handle, json_encode($document) . "\n") !== false;
     }
