@@ -147,6 +147,7 @@ $result = $database->collection($file)->findOne(
 ### Méthode de modification :
 
 Pour la modification, les documents concernés sont entièrement remplacés par le second **array()** passé en paramètre.
+Le document conserve son `_rid`, même si le tableau ne le contient pas ou en fournit un autre.
 
 *Il faut au préalable rechercher tous les documents à remplacer pour fournir l'attribut `_rid` à la méthode update*
 
