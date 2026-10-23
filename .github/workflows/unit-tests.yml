@@ -45,6 +45,23 @@ jobs:
           composer phpstan
 
       - name: Upload coverage results to Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: vendor/bin/php-coveralls -v
+        uses: coverallsapp/github-action@v2
+        with:
+          file: clover.xml
+          format: clover
+          flag-name: php-${{ matrix.php }}
+          parallel: true
+
+  coverage:
+    name: Coverage
+
+    needs: tests
+    if: ${{ always() }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Finish Coveralls parallel build
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
