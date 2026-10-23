@@ -5,7 +5,7 @@
     <arg value="p"/>
     <arg name="colors"/>
 
-    <rule ref="PSR2"/>
+    <rule ref="PSR12"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
         <properties>

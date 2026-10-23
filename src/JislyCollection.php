@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @see       https://github.com/r0mdau/jisly for the source repository
  * @copyright Copyright (c) 2026 r0mdau (https://github.com/r0mdau)
@@ -20,6 +21,9 @@ class JislyCollection
 
     private string $file;
 
+    /**
+     * @var array<array-key, \stdClass>
+     */
     private array $data;
 
     public function __construct(string $dir, string $file)
@@ -50,17 +54,28 @@ class JislyCollection
         return $success;
     }
 
+    /**
+     * @param array<string, mixed>|null $document
+     * @return array<array-key, \stdClass>
+     */
     public function find(?array $document = null, string $logical = "OR"): array
     {
         return $this->search($document, $logical);
     }
 
-    public function findOne(?array $document = null, string $logical = "OR"): object
+    /**
+     * @param array<string, mixed>|null $document
+     */
+    public function findOne(?array $document = null, string $logical = "OR"): ?object
     {
         $result = $this->search($document, $logical);
-        return reset($result);
+        $first = reset($result);
+        return $first === false ? null : $first;
     }
 
+    /**
+     * @param array<string, mixed> $document
+     */
     public function insert(array $document): bool
     {
         if (!isset($document["_rid"])) {
@@ -81,6 +96,9 @@ class JislyCollection
         return true;
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     public function update(string $_rid, array $values): bool
     {
         $success = false;
@@ -105,7 +123,7 @@ class JislyCollection
             $data = fgets($handle);
             if ($data !== false) {
                 $data = json_decode($data);
-                if (isset($data->_rid)) {
+                if ($data instanceof \stdClass && isset($data->_rid)) {
                     $this->data[$data->_rid] = $data;
                 }
             }
@@ -113,11 +131,15 @@ class JislyCollection
     }
 
     /**
+     * @param LOCK_SH|LOCK_EX $lock
      * @return resource
      */
     private function openFile(string $mode, int $lock)
     {
         $handle = fopen($this->file, $mode);
+        if ($handle === false) {
+            throw new \RuntimeException("Unable to open {$this->file}");
+        }
         flock($handle, $lock);
         return $handle;
     }
@@ -139,6 +161,10 @@ class JislyCollection
         return $success;
     }
 
+    /**
+     * @param array<string, mixed>|null $document
+     * @return array<array-key, \stdClass>
+     */
     private function search(?array $document = null, string $logical = "OR"): array
     {
         if (is_null($document)) {
@@ -149,10 +175,12 @@ class JislyCollection
         foreach ($this->data as $object) {
             $find = 0;
             foreach (array_keys($document) as $documentKey) {
-                /** @phpstan-ignore-next-line */
+                // Loose comparison is intended, so "123" matches 123
+                // @phpstan-ignore equal.notAllowed
                 if (property_exists($object, $documentKey) && $object->{$documentKey} == $document[$documentKey]) {
                     $find++;
-                    if ($logical === static::LOGICAL_OR
+                    if (
+                        $logical === static::LOGICAL_OR
                         || ($logical === static::LOGICAL_AND && $find === count($document))
                     ) {
                         $results[$object->_rid] = $object;
@@ -165,6 +193,7 @@ class JislyCollection
 
     /**
      * @param resource $handle
+     * @param array<string, mixed> $document
      */
     private function write($handle, array $document): bool
     {

@@ -1,7 +1,4 @@
 includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
-	level: 6
-	reportUnmatchedIgnoredErrors: true
-	ignoreErrors:
-	- identifier: missingType.iterableValue
+	level: 9
