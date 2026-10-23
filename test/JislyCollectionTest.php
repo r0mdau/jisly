@@ -196,6 +196,36 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testUpdateWithoutRidKeepsDocument()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+        $this->write(["_rid" => "coolos", "key" => 456]);
+        $this->getCollection()->update("cool", ["key" => 7]);
+
+        $this->assertEquals(
+            [
+                "cool" => (object)["_rid" => "cool", "key" => 7],
+                "coolos" => (object)["_rid" => "coolos", "key" => 456]
+            ],
+            $this->getDataFromFile()
+        );
+    }
+
+    public function testUpdateCannotChangeRid()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+        $this->write(["_rid" => "coolos", "key" => 456]);
+        $this->getCollection()->update("cool", ["_rid" => "coolos", "key" => 7]);
+
+        $this->assertEquals(
+            [
+                "cool" => (object)["_rid" => "cool", "key" => 7],
+                "coolos" => (object)["_rid" => "coolos", "key" => 456]
+            ],
+            $this->getDataFromFile()
+        );
+    }
+
     public function testUpdateReturnTrueIfSuccess()
     {
         $this->write(["_rid" => "cool", "key" => 123]);

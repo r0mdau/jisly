@@ -106,7 +106,7 @@ class JislyCollection
         $this->hydrateData($handle);
 
         if (isset($this->data[$_rid])) {
-            $this->data[$_rid] = (object)$values;
+            $this->data[$_rid] = (object)(["_rid" => $_rid] + $values);
             $success = $this->rewriteFile($handle);
         }
         flock($handle, LOCK_UN);

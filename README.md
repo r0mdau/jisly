@@ -147,7 +147,8 @@ $result = $database->collection($file)->findOne(
 
 ### Update method
 
-For the modification, the documents concerned are entirely replaced by the second **array()** given in parameter.
+For the modification, the documents concerned are entirely replaced by the second **array()** given in parameter. The
+document keeps its `_rid`, even if the array omits it or gives another one.
 
 *You must first find all the documents to replace to provide the `_rid` attribute to the update method.*
 
