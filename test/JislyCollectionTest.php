@@ -20,6 +20,9 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+        if (in_array(UntruncatableStream::SCHEME, stream_get_wrappers(), true)) {
+            stream_wrapper_unregister(UntruncatableStream::SCHEME);
+        }
         $handle = fopen($this->file, 'w');
         fclose($handle);
     }
@@ -54,6 +57,13 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
     public function testDeleteReturnFalseIfFail()
     {
         $this->assertFalse($this->getCollection()->delete("key"));
+    }
+
+    public function testDeleteReturnFalseIfFileCannotBeTruncated()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+
+        $this->assertFalse($this->getUntruncatableCollection()->delete("cool"));
     }
 
     public function testFindWithNullDocument()
@@ -174,6 +184,13 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->getCollection()->update("cool", ["_rid" => "cool", "key" => 7]));
     }
 
+    public function testUpdateReturnFalseIfFileCannotBeTruncated()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+
+        $this->assertFalse($this->getUntruncatableCollection()->update("cool", ["_rid" => "cool", "key" => 7]));
+    }
+
     private function getDataFromFile()
     {
         $handle = fopen($this->file, 'r');
@@ -195,6 +212,12 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         return $this->db->collection("test.db");
     }
 
+    private function getUntruncatableCollection()
+    {
+        stream_wrapper_register(UntruncatableStream::SCHEME, UntruncatableStream::class);
+        return new JislyCollection(UntruncatableStream::SCHEME . "://data", "test.db");
+    }
+
     private function write($document)
     {
         $handle = fopen($this->file, 'a');
@@ -204,4 +227,79 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
 
     private $db;
     private $file;
+}
+
+/**
+ * Stream wrapper over a real file whose truncate always fails.
+ */
+class UntruncatableStream
+{
+    const SCHEME = "untruncatable";
+
+    /**
+     * @var resource|null
+     */
+    public $context;
+
+    /**
+     * @var resource
+     */
+    private $handle;
+
+    public function stream_open($path, $mode)
+    {
+        $this->handle = fopen(self::realPath($path), $mode);
+        return $this->handle !== false;
+    }
+
+    public function stream_read($count)
+    {
+        return fread($this->handle, $count);
+    }
+
+    public function stream_write($data)
+    {
+        return fwrite($this->handle, $data);
+    }
+
+    public function stream_eof()
+    {
+        return feof($this->handle);
+    }
+
+    public function stream_seek($offset, $whence)
+    {
+        return fseek($this->handle, $offset, $whence) === 0;
+    }
+
+    public function stream_tell()
+    {
+        return ftell($this->handle);
+    }
+
+    public function stream_lock($operation)
+    {
+        return flock($this->handle, $operation);
+    }
+
+    public function stream_truncate($size)
+    {
+        return false;
+    }
+
+    public function stream_close()
+    {
+        fclose($this->handle);
+    }
+
+    public function url_stat($path, $flags)
+    {
+        $realPath = self::realPath($path);
+        return file_exists($realPath) ? stat($realPath) : false;
+    }
+
+    private static function realPath($path)
+    {
+        return substr($path, strlen(self::SCHEME . "://"));
+    }
 }
