@@ -108,7 +108,7 @@ $results = $database->collection($file)->find(
 );
 ```
 
-Return the first document that as a `name` attribute with `19` as an object value :
+Return the first document that has a `name` attribute with `19` as an object value, or `null` if none matches :
 ```php
 $result = $database->collection($file)->findOne(
   [

@@ -20,8 +20,10 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        if (in_array(UntruncatableStream::SCHEME, stream_get_wrappers(), true)) {
-            stream_wrapper_unregister(UntruncatableStream::SCHEME);
+        foreach ([UntruncatableStream::SCHEME, UnopenableStream::SCHEME] as $scheme) {
+            if (in_array($scheme, stream_get_wrappers(), true)) {
+                stream_wrapper_unregister($scheme);
+            }
         }
         $handle = fopen($this->file, 'w');
         fclose($handle);
@@ -57,6 +59,21 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
     public function testDeleteReturnFalseIfFail()
     {
         $this->assertFalse($this->getCollection()->delete("key"));
+    }
+
+    public function testConstructThrowsIfFileCannotBeOpened()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+        stream_wrapper_register(UnopenableStream::SCHEME, UnopenableStream::class);
+
+        $this->expectException(\RuntimeException::class);
+        // fopen() warns before returning false, which is the expected failure here
+        set_error_handler(static fn () => true, E_WARNING);
+        try {
+            new JislyCollection(UnopenableStream::SCHEME . "://data", "test.db");
+        } finally {
+            restore_error_handler();
+        }
     }
 
     public function testDeleteReturnFalseIfFileCannotBeTruncated()
@@ -118,6 +135,13 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
             (object)["_rid" => "cool", "key" => 123],
             $result
         );
+    }
+
+    public function testFindOneReturnNullIfNotFound()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+
+        $this->assertNull($this->getCollection()->findOne(["key" => 456]));
     }
 
     public function testInsert()
@@ -248,7 +272,7 @@ class UntruncatableStream
 
     public function stream_open($path, $mode)
     {
-        $this->handle = fopen(self::realPath($path), $mode);
+        $this->handle = fopen(static::realPath($path), $mode);
         return $this->handle !== false;
     }
 
@@ -294,12 +318,25 @@ class UntruncatableStream
 
     public function url_stat($path, $flags)
     {
-        $realPath = self::realPath($path);
+        $realPath = static::realPath($path);
         return file_exists($realPath) ? stat($realPath) : false;
     }
 
     private static function realPath($path)
     {
-        return substr($path, strlen(self::SCHEME . "://"));
+        return substr($path, strlen(static::SCHEME . "://"));
+    }
+}
+
+/**
+ * Stream wrapper over a real file that can never be opened.
+ */
+class UnopenableStream extends UntruncatableStream
+{
+    const SCHEME = "unopenable";
+
+    public function stream_open($path, $mode)
+    {
+        return false;
     }
 }

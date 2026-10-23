@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @see       https://github.com/r0mdau/jisly for the source repository
  * @copyright Copyright (c) 2026 r0mdau (https://github.com/r0mdau)
