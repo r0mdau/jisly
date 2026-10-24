@@ -161,3 +161,29 @@ $successBool = $database->collection($file)->update(
   ]
 );
 ```
+
+# Benchmarks
+
+Les benchmarks se trouvent dans `benchmark/` et s'exécutent avec [PHPBench](https://github.com/phpbench/phpbench) :
+
+```
+composer bench
+```
+
+Chaque opération est mesurée sur des collections de 100, 1 000 et 10 000 documents. Résultats indicatifs (mode par
+appel, PHP 8.3, VM cloud x86_64, disque local) :
+
+| Opération                       | 100 docs | 1 000 docs | 10 000 docs |
+|---------------------------------|---------:|-----------:|------------:|
+| Ouverture d'une collection      |  0,13 ms |    1,2 ms  |      15 ms  |
+| `insert()`                      |  0,01 ms |   0,01 ms  |    0,01 ms  |
+| `find()` sans filtre            |   < 1 µs |     < 1 µs |      < 1 µs |
+| `find()` avec `OR`              |  0,06 ms |    0,6 ms  |     7,7 ms  |
+| `find()` avec `AND`             |  0,07 ms |    0,6 ms  |     8,0 ms  |
+| `findOne()` par `_rid`          |  0,04 ms |    0,4 ms  |     3,8 ms  |
+| `update()`                      |  0,63 ms |    3,0 ms  |      36 ms  |
+| `delete()`                      |  0,63 ms |    3,2 ms  |      32 ms  |
+
+L'ouverture d'une collection lit tout le fichier, les recherches parcourent tous les documents, et `update()` /
+`delete()` réécrivent tout le fichier : leur coût croît linéairement avec la taille de la collection. `insert()` ajoute
+seulement une ligne, son coût reste constant.
