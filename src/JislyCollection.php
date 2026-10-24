@@ -162,6 +162,36 @@ class JislyCollection
     }
 
     /**
+     * Documents are keyed by _rid, so when every match must carry the
+     * requested _rid, only that one document needs checking.
+     *
+     * @param array<string, mixed> $document
+     * @return array<array-key, \stdClass>
+     */
+    private function candidates(array $document, string $logical): array
+    {
+        if (array_key_exists("_rid", $document) && (count($document) === 1 || $logical === static::LOGICAL_AND)) {
+            $rid = $document["_rid"];
+            return (is_string($rid) || is_int($rid)) && isset($this->data[$rid]) ? [$this->data[$rid]] : [];
+        }
+        return $this->data;
+    }
+
+    private function matches(\stdClass $object, string $key, mixed $value): bool
+    {
+        if (!property_exists($object, $key)) {
+            return false;
+        }
+        // _rid is a unique identifier, so it must match exactly
+        if ($key === "_rid") {
+            return $object->_rid === $value;
+        }
+        // Loose comparison is intended, so "123" matches 123
+        // @phpstan-ignore equal.notAllowed
+        return $object->{$key} == $value;
+    }
+
+    /**
      * @param array<string, mixed>|null $document
      * @return array<array-key, \stdClass>
      */
@@ -172,12 +202,10 @@ class JislyCollection
         }
 
         $results = [];
-        foreach ($this->data as $object) {
+        foreach ($this->candidates($document, $logical) as $object) {
             $find = 0;
             foreach (array_keys($document) as $documentKey) {
-                // Loose comparison is intended, so "123" matches 123
-                // @phpstan-ignore equal.notAllowed
-                if (property_exists($object, $documentKey) && $object->{$documentKey} == $document[$documentKey]) {
+                if ($this->matches($object, $documentKey, $document[$documentKey])) {
                     $find++;
                     if (
                         $logical === static::LOGICAL_OR

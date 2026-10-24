@@ -35,7 +35,8 @@ public function saveCart(): void {
 
 # Définitions
 
-1. Chaque document possède un identifiant unique dénommé `_rid`.
+1. Chaque document possède un identifiant unique dénommé `_rid`. Les recherches comparent `_rid` à l'identique
+(`"0123"` ne trouve pas `"123"`), les autres attributs avec une comparaison souple (`"123"` trouve `123`).
 2. Chaque collection est représentée physiquement par un fichier.
 3. Les fichiers sont stockés dans un seul répertoire de travail. La classs Jisly est instanciée avec le chemin vers ce 
 répertoire en paramètre.
@@ -180,10 +181,10 @@ appel, PHP 8.3, VM cloud x86_64, disque local) :
 | `find()` sans filtre            |   < 1 µs |     < 1 µs |      < 1 µs |
 | `find()` avec `OR`              |  0,06 ms |    0,6 ms  |     7,7 ms  |
 | `find()` avec `AND`             |  0,07 ms |    0,6 ms  |     8,0 ms  |
-| `findOne()` par `_rid`          |  0,04 ms |    0,4 ms  |     3,8 ms  |
+| `findOne()` par `_rid`          |   < 2 µs |     < 2 µs |      < 2 µs |
 | `update()`                      |  0,63 ms |    3,0 ms  |      36 ms  |
 | `delete()`                      |  0,63 ms |    3,2 ms  |      32 ms  |
 
 L'ouverture d'une collection lit tout le fichier, les recherches parcourent tous les documents, et `update()` /
 `delete()` réécrivent tout le fichier : leur coût croît linéairement avec la taille de la collection. `insert()` ajoute
-seulement une ligne, son coût reste constant.
+seulement une ligne et une recherche sur `_rid` ne consulte que ce document, leur coût reste donc constant.
