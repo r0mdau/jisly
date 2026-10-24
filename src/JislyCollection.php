@@ -162,6 +162,27 @@ class JislyCollection
     }
 
     /**
+     * Documents are keyed by _rid, so when every match must carry the
+     * requested _rid, only that one document needs checking. A miss still
+     * scans everything, so loose matches (e.g. "0123" for "123") keep working.
+     *
+     * @param array<string, mixed> $document
+     * @return array<array-key, \stdClass>
+     */
+    private function candidates(array $document, string $logical): array
+    {
+        $rid = $document["_rid"] ?? null;
+        if (
+            (is_string($rid) || is_int($rid))
+            && (count($document) === 1 || $logical === static::LOGICAL_AND)
+            && isset($this->data[$rid])
+        ) {
+            return [$this->data[$rid]];
+        }
+        return $this->data;
+    }
+
+    /**
      * @param array<string, mixed>|null $document
      * @return array<array-key, \stdClass>
      */
@@ -172,7 +193,7 @@ class JislyCollection
         }
 
         $results = [];
-        foreach ($this->data as $object) {
+        foreach ($this->candidates($document, $logical) as $object) {
             $find = 0;
             foreach (array_keys($document) as $documentKey) {
                 // Loose comparison is intended, so "123" matches 123

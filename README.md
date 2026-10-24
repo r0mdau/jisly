@@ -181,9 +181,10 @@ PHP 8.3, x86_64 cloud VM, local disk):
 | `find()` all               |   < 1 µs |     < 1 µs |      < 1 µs |
 | `find()` with `OR`         |  0.06 ms |    0.6 ms  |     7.7 ms  |
 | `find()` with `AND`        |  0.07 ms |    0.6 ms  |     8.0 ms  |
-| `findOne()` by `_rid`      |  0.04 ms |    0.4 ms  |     3.8 ms  |
+| `findOne()` by `_rid`      |   < 2 µs |     < 2 µs |      < 2 µs |
 | `update()`                 |  0.63 ms |    3.0 ms  |      36 ms  |
 | `delete()`                 |  0.63 ms |    3.2 ms  |      32 ms  |
 
 Opening a collection reads the whole file, searches scan every document, and `update()` / `delete()` rewrite the
-whole file, so these grow linearly with the collection size. `insert()` only appends a line, so its cost stays flat.
+whole file, so these grow linearly with the collection size. `insert()` only appends a line and a search on `_rid`
+only looks up that document, so their cost stays flat.

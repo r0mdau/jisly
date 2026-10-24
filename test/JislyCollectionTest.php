@@ -137,6 +137,42 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testFindOneByRid()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+        $this->write(["_rid" => "cooly", "key" => 456]);
+
+        $this->assertEquals(
+            (object)["_rid" => "cooly", "key" => 456],
+            $this->getCollection()->findOne(["_rid" => "cooly"])
+        );
+    }
+
+    public function testFindByRidLogicalAND()
+    {
+        $this->write(["_rid" => "cool", "key" => 123]);
+        $this->write(["_rid" => "cooly", "key" => 123]);
+
+        $this->assertEquals(
+            ["cooly" => (object)["_rid" => "cooly", "key" => 123]],
+            $this->getCollection()->find(["_rid" => "cooly", "key" => 123], JislyCollection::LOGICAL_AND)
+        );
+        $this->assertEquals(
+            [],
+            $this->getCollection()->find(["_rid" => "cooly", "key" => 456], JislyCollection::LOGICAL_AND)
+        );
+    }
+
+    public function testFindByRidKeepsLooseComparison()
+    {
+        $this->write(["_rid" => "123", "key" => 456]);
+
+        $this->assertEquals(
+            (object)["_rid" => "123", "key" => 456],
+            $this->getCollection()->findOne(["_rid" => "0123"])
+        );
+    }
+
     public function testFindOneReturnNullIfNotFound()
     {
         $this->write(["_rid" => "cool", "key" => 123]);
