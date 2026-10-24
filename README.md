@@ -19,7 +19,7 @@ storage using a NoSQL (document oriented) query syntax.
 This lib can be found on [Packagist](https://packagist.org/packages/r0mdau/jisly)
 
 ```
-composer require r0mdau/jisly:^2.0
+composer require r0mdau/jisly:^3.0
 ```
 
 ## Loading the library
