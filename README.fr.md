@@ -17,7 +17,7 @@ L'objectif principal de Jisly est de vous permettre de démarrer rapidement votr
 Cette librairie est disponible sur [Packagist](https://packagist.org/packages/r0mdau/jisly)
 
 ```
-composer require r0mdau/jisly:^2.0
+composer require r0mdau/jisly:^3.0
 ```
 
 ## Charger la librairie
