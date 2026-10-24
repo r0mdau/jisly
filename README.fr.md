@@ -35,7 +35,8 @@ public function saveCart(): void {
 
 # Définitions
 
-1. Chaque document possède un identifiant unique dénommé `_rid`.
+1. Chaque document possède un identifiant unique dénommé `_rid`. Les recherches comparent `_rid` à l'identique
+(`"0123"` ne trouve pas `"123"`), les autres attributs avec une comparaison souple (`"123"` trouve `123`).
 2. Chaque collection est représentée physiquement par un fichier.
 3. Les fichiers sont stockés dans un seul répertoire de travail. La classs Jisly est instanciée avec le chemin vers ce 
 répertoire en paramètre.

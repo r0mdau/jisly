@@ -163,13 +163,18 @@ class JislyCollectionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testFindByRidKeepsLooseComparison()
+    public function testFindByRidMatchesExactly()
     {
         $this->write(["_rid" => "123", "key" => 456]);
+        $collection = $this->getCollection();
 
+        $this->assertNull($collection->findOne(["_rid" => "0123"]));
+        $this->assertNull($collection->findOne(["_rid" => 123]));
+        $this->assertNull($collection->findOne(["_rid" => null]));
+        $this->assertEquals([], $collection->find(["_rid" => "0123", "key" => 999]));
         $this->assertEquals(
             (object)["_rid" => "123", "key" => 456],
-            $this->getCollection()->findOne(["_rid" => "0123"])
+            $collection->findOne(["_rid" => "123"])
         );
     }
 

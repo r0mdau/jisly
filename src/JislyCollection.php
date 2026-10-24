@@ -163,23 +163,32 @@ class JislyCollection
 
     /**
      * Documents are keyed by _rid, so when every match must carry the
-     * requested _rid, only that one document needs checking. A miss still
-     * scans everything, so loose matches (e.g. "0123" for "123") keep working.
+     * requested _rid, only that one document needs checking.
      *
      * @param array<string, mixed> $document
      * @return array<array-key, \stdClass>
      */
     private function candidates(array $document, string $logical): array
     {
-        $rid = $document["_rid"] ?? null;
-        if (
-            (is_string($rid) || is_int($rid))
-            && (count($document) === 1 || $logical === static::LOGICAL_AND)
-            && isset($this->data[$rid])
-        ) {
-            return [$this->data[$rid]];
+        if (array_key_exists("_rid", $document) && (count($document) === 1 || $logical === static::LOGICAL_AND)) {
+            $rid = $document["_rid"];
+            return (is_string($rid) || is_int($rid)) && isset($this->data[$rid]) ? [$this->data[$rid]] : [];
         }
         return $this->data;
+    }
+
+    private function matches(\stdClass $object, string $key, mixed $value): bool
+    {
+        if (!property_exists($object, $key)) {
+            return false;
+        }
+        // _rid is a unique identifier, so it must match exactly
+        if ($key === "_rid") {
+            return $object->_rid === $value;
+        }
+        // Loose comparison is intended, so "123" matches 123
+        // @phpstan-ignore equal.notAllowed
+        return $object->{$key} == $value;
     }
 
     /**
@@ -196,9 +205,7 @@ class JislyCollection
         foreach ($this->candidates($document, $logical) as $object) {
             $find = 0;
             foreach (array_keys($document) as $documentKey) {
-                // Loose comparison is intended, so "123" matches 123
-                // @phpstan-ignore equal.notAllowed
-                if (property_exists($object, $documentKey) && $object->{$documentKey} == $document[$documentKey]) {
+                if ($this->matches($object, $documentKey, $document[$documentKey])) {
                     $find++;
                     if (
                         $logical === static::LOGICAL_OR
