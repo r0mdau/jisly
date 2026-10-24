@@ -9,6 +9,7 @@
   },
   "require-dev": {
     "malukenho/docheader": "^1.1",
+    "phpbench/phpbench": "^1.7",
     "phpstan/phpstan": "^2.3",
     "phpstan/phpstan-strict-rules": "^2.1",
     "phpunit/phpunit": "^13.4",
@@ -21,7 +22,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "JislyTest\\": "test/"
+      "JislyTest\\": "test/",
+      "JislyBench\\": "benchmark/"
     }
   },
   "config": {
@@ -36,9 +38,10 @@
     ],
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
-    "phpstan": "phpstan analyze ./src",
+    "phpstan": "phpstan analyze ./src ./benchmark",
     "test": "phpunit --colors=always",
     "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-clover clover.xml",
-    "license-check": "docheader check src/ test/"
+    "license-check": "docheader check src/ test/ benchmark/",
+    "bench": "phpbench run --report=jisly"
   }
 }

@@ -1,0 +1,13 @@
+{
+    "$schema": "./vendor/phpbench/phpbench/phpbench.schema.json",
+    "runner.bootstrap": "vendor/autoload.php",
+    "runner.path": "benchmark",
+    "runner.file_pattern": "*Bench.php",
+    "report.generators": {
+        "jisly": {
+            "generator": "expression",
+            "cols": ["subject", "set", "revs", "its", "mem_peak", "mode", "rstdev"],
+            "break": ["benchmark"]
+        }
+    }
+}

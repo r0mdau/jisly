@@ -14,4 +14,5 @@
     </rule>
 
     <file>src</file>
+    <file>benchmark</file>
 </ruleset>
